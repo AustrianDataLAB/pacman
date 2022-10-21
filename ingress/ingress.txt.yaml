@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    # add here an IP and check with your phone over 4G that its working
+    ingress.kubernetes.io/whitelist-source-range: 193.170.196.55
+  name: ingress-$pacman
+  namespace: $pacman
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ingress-$pacman.k8s.dev.austrianopensciencecloud.org
+    http:
+      paths:
+      - backend:
+          service:
+            name: pacman
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  #tls:
+  #- hosts:
+  #  - ingress-$pacman.k8s.dev.austrianopensciencecloud.org
+  #  secretName: $pacman-ingress-tls
