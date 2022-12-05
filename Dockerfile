@@ -13,5 +13,7 @@ RUN npm install
 # Expose port 8080
 EXPOSE 8080
 
+USER node
+
 # Run container
 CMD ["npm", "start"]
