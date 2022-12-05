@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: mbwali/pacman:latest # adlsregistrysbx.azurecr.io/tutorials/pacman
+  repository: mbwali/pacman # adlsregistrysbx.azurecr.io/tutorials/pacman
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
