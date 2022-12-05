@@ -20,35 +20,35 @@ spec:
       labels:
         name: mongo
     spec:
-      initContainers:
-      - args:
-        - |
-          mkdir -p /bitnami/mongodb
-          chown -R "1000:1000" "/bitnami/mongodb"
-        command:
-        - /bin/bash
-        - -ec
-        image: busybox
-        imagePullPolicy: Always
-        name: volume-permissions
-        resources: {}
-        # securityContext:
-        #   runAsUser: 0
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /bitnami/mongodb
-          name: mongo-db
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      # securityContext:
-      #   fsGroup: 1001
-      serviceAccountName: default
-      terminationGracePeriodSeconds: 30
-      volumes:
-      - name: mongo-db
-        persistentVolumeClaim:
-          claimName: mongo-storage
+      # initContainers:
+      # - args:
+      #   - |
+      #     mkdir -p /bitnami/mongodb
+      #     chown -R "1000:1000" "/bitnami/mongodb"
+      #   command:
+      #   - /bin/bash
+      #   - -ec
+      #   image: busybox
+      #   imagePullPolicy: Always
+      #   name: volume-permissions
+      #   resources: {}
+      #   # securityContext:
+      #   #   runAsUser: 0
+      #   terminationMessagePath: /dev/termination-log
+      #   terminationMessagePolicy: File
+      #   volumeMounts:
+      #   - mountPath: /bitnami/mongodb
+      #     name: mongo-db
+      # restartPolicy: Always
+      # schedulerName: default-scheduler
+      # # securityContext:
+      # #   fsGroup: 1001
+      # serviceAccountName: default
+      # terminationGracePeriodSeconds: 30
+      # volumes:
+      # - name: mongo-db
+      #   persistentVolumeClaim:
+      #     claimName: mongo-storage
       containers:
       - name: mongo
         image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag | default .Chart.AppVersion }}"
