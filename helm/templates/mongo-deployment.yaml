@@ -45,10 +45,10 @@ spec:
       # #   fsGroup: 1001
       # serviceAccountName: default
       # terminationGracePeriodSeconds: 30
-      # volumes:
-      # - name: mongo-db
-      #   persistentVolumeClaim:
-      #     claimName: mongo-storage
+      volumes:
+      - name: mongo-db
+        persistentVolumeClaim:
+          claimName: mongo-storage
       containers:
       - name: mongo
         image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag | default .Chart.AppVersion }}"
