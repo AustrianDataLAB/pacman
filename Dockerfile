@@ -1,11 +1,7 @@
 FROM node:latest
 
-# Create a pacman user
-RUN useradd -ms /bin/bash pacman
-
 # Create app directory
-RUN mkdir -p /usr/src/app \
- && chown -R pacman:pacman /usr/src/app
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Clone game source code
@@ -16,6 +12,9 @@ RUN npm install
 
 # Expose port 8080
 EXPOSE 8080
-USER pacman
+
+RUN usermod -o -u 1000 node
+USER 1000
+
 # Run container
 CMD ["npm", "start"]
