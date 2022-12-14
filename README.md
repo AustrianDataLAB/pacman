@@ -172,7 +172,7 @@ The application is made up of the following components:
 
 
 
-<img src="../assets/tutorials/kubernetes/PacMan-1.png" width=50% height=50%>
+<img src="https://raw.githubusercontent.com/AustrianDataLAB/img/main/PacMan-1.png" width=50% height=50%>
 
 ## Source
 
