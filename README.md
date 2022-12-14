@@ -35,7 +35,7 @@ Pac-Man the classic arcade game - modified/upgraded for our Rancher cluster so y
 
 <p float="left">
 <img src="https://raw.githubusercontent.com/AustrianDataLAB/img/main/PacMan-1.png" width=45% height=45%>
-<img src="https://raw.githubusercontent.com/AustiranDataLAB/img/main/PacMan-Game.png" width=50% height=50%>
+<img src="https://raw.githubusercontent.com/AustrianDataLAB/img/main/PacMan-Game.png" width=50% height=50%>
 </p>
 This was taken from https://vzilla.co.uk/vzilla-blog/building-the-home-lab-kubernetes-playground-part-9
 
