@@ -10,6 +10,180 @@ Rewritten from the original to work on a hardened rke2
 ## Support and Community Slack
 https://aocc-public.slack.com/join/signup
 
-## The readme can be found at 
-https://gitlab.tuwien.ac.at/ADLS/services-webportal/angular-frontend/-/tree/dev/src/markdown-files/tutorials/kubernetes
 
+# Welcome to your Kubernetes Beginner Tutorial
+
+This is aimed at beginners to play with the main components of a k8s deployment.
+While most components are generic to any k8s, some specific annotations are required for this Rancher-based teaching cluster.
+
+At the end of this tutorial you will be able to:
+* understand and use k8s manifests for the most common components
+* understand how to find logs
+* understand how to dig through the network
+* understand how manifests are different from helm charts
+* understand the difference between a statefulset and a deployment 
+* inspect a secret
+* understand the basics of RBAC (Role Based Access Control)
+* generate a certificate using cert manager (or by hand, if someone has the patience)
+* work with `kubectl` , `RancherUI` and `Lens` 
+
+
+## Tutorial Part I: Learn how a k8s-"deployment" works by running Pac-Man 
+
+
+Pac-Man the classic arcade game - modified/upgraded for our Rancher cluster so you may have fun modifying its components.
+
+<p float="left">
+<img src="https://raw.githubusercontent.com/AustrianDataLAB/img/PacMan-1.png" width=45% height=45%>
+<img src="https://raw.githubusercontent.com/AustiranDataLAB/img/PacMan-Game.png" width=50% height=50%>
+</p>
+This was taken from https://vzilla.co.uk/vzilla-blog/building-the-home-lab-kubernetes-playground-part-9
+
+## Pre-Reqs
+
+You have a valid student user and have logged into RancherUI https://rancher.k8s.dev.austrianopensciencecloud.org/
+
+## Deployment
+### Note your username and path to kubeconf file
+your user starts with 'u-' and you can run in the RacherUI:
+```bash
+kubectl get all 
+```
+that ll tell you, that your user 'u-***' doesnt have rights to see something. Copy this string!
+
+Download the kubeconfig file from the RancherUI, top right and save it somewhere on your laptop.
+
+```bash
+export KUBECONFIG=~/Downloads/local-2.yaml
+export pacman='u-r6hs89045r2f'
+
+```
+### Using a Script for installation
+Clone repo, checkout branch=`main` 
+Then: run ```chmod +X pacman-install.sh``` and then run file ```./pacman-install.sh```
+```bash
+git clone git@github.com:entlein/pacman.git
+chmod +X pacman-install.sh
+./pacman-install.sh
+```
+
+
+
+#### Uninstall using a Script
+Run file `./pacman-uninstall.sh`. This will delete all objects created by `./pacman-install.sh`
+
+Alternatively, run `./pacman-uninstall.sh keeppvc`. This will delete all objects except for the pacman namespace and the persistent volume claim. You can use this to demonstrate persistence of the MongoDB data by installing, playing a game and recording a high score, then unininstalling with the `keeppvc` argument. You can then run the installation again and the high score will persist.
+
+#### Note of caution: Cert manager will only sign very few official certificates per 168 hrs 
+Before adding the ingress/cert, make sure you understand what that does and that you know how to keep your certificate 'safe'
+
+
+## Task 1: lets add ingress and a certificate
+Your Mission, if you choose to accept it:
+
+expose your service to the internet and use a TLS certificate
+HINT: checkout branch=`tutorial/ingress`
+
+
+## Task 2: follow the network traffic
+Your Mission, if you choose to accept it:
+
+understand exactly who is talking to whom
+HINT: use hubble (HINT: not the telescope)
+
+## Task 3: Scan and Upgrade: Know what is inside
+Your Mission, if you choose to accept it:
+
+scan the deployment and upgrade everything
+ 
+HINT: checkout branch=`tutorial/upgrades`
+## Task 4: make this better by adding a network policy
+Your Mission, if you choose to accept it:
+
+give it as little permissions as possible, for example: make a policy that allows only the podman-pod to talk to the mongo-service.
+You can test this by installing mongo-express (a common UI for mongo-db) and trying to connect to the mongo-db, before and after your policy is in place.
+Make sure you understand when the UI can connect, and when it cannot. Also use hubble to debug.
+
+````bash
+helm repo add cowboysysop https://cowboysysop.github.io/charts/
+helm install mongo-express cowboysysop/mongo-express -n $pacman --set mongodbServer=mongo --kubeconfig ~/Downloads/local-2.yaml
+````
+
+TODO: set the authentication in mongo-express properly
+## Using Helm to install
+First, make sure you uninstalled everything.
+
+Now, there are two options, depending on how much time you want to spend, 
+the barebone approach is the following:
+
+````bash
+helm create pacman-rancher
+
+edit to your heart s content
+
+helm package ~/gitrepos/pacman/pacman-rancher/. -d ~/gitrepos/pacman/helm
+Successfully packaged chart and saved it to: /Users/croedig/gitrepos/pacman/helm/pacman-rancher-0.1.0.tgz
+
+#Do this only if you really feel like you want to publish a package, normally we dont ever do this from localhost
+#this is more to demonstrate that you *could* do it this way, please use a CI/CD pipeline for anything real world
+helm repo index ~/gitrepos/pacman/helm --url http://adlsexample.org/charts
+sudo sh -c "echo '127.0.1.99       adlsexample.org' >> /etc/hosts"
+#create some form of a webserver, e.g. with python or apache or nginx and copy your files to the folder *charts*
+cp ~/gitrepos/pacman/helm/* to webserverdir/charts
+#now if your url is actually serving your tarball plus the index file, you can add it
+helm repo add my-awesome-pacman http://adlsexample.org/charts
+````
+Since hosting files on a local webserver is not the point of this exercise, lets just do the installation from local file-structure using the branch on our gitrepo that contains the subfolder `~/gitrepos/pacman/pacman-rancher/.`
+
+
+`git checkout -b tutorial/helm` 
+Feel very free to add, improve and experiment with the (very basic) helm chart that you will now find.
+
+````bash
+helm upgrade --install pacmanhelm ~/gitrepos/pacman/pacman-rancher/. -n $pacman --create-namespace --kubeconfig ~/Downloads/local-2.yaml
+````
+For further commands with helm, please read the upstream documentation at helm.sh, here are some common commands:
+````bash
+# You can see the available values by running
+helm ls pacmanhelm -n $pacman
+helm get manifest pacmanhelm -n $pacman
+````
+[Read this blog post](https://veducate.co.uk/how-to-create-helm-chart/) to learn how the original Helm Chart was created.
+
+
+## Architecture
+
+The application is made up of the following components:
+
+* Namespace
+* Deployment
+  * MongoDB Pod
+    * DB Authentication configured
+    * Attached to a PVC
+  * Pac-Man Pod
+    * Nodejs web front end that connects back to the MongoDB Pod by looking for the Pod DNS address internally.
+* RBAC Configuration for Pod Security and Service Account
+* Secret which holds the data for the MongoDB Usernames and Passwords to be configured
+* Service
+  * Type: ClusterIP
+* Ingress
+  * Using a certificate generated via certman
+
+
+
+
+<img src="../assets/tutorials/kubernetes/PacMan-1.png" width=50% height=50%>
+
+## Source
+
+These are modified files from the below github repos , changed mildly to make them run contained in a single namespace and without priviledged pods.
+
+> <https://github.com/saintdle/pacman-tanzu.git>
+
+
+> <https://github.com/font/k8s-example-apps/tree/master/pacman-nodejs-app>
+
+
+## Recommended Reading
+
+Snyk's vulnerability database: https://security.snyk.io/vuln/npm 
