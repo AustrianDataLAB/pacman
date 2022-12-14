@@ -34,8 +34,8 @@ At the end of this tutorial you will be able to:
 Pac-Man the classic arcade game - modified/upgraded for our Rancher cluster so you may have fun modifying its components.
 
 <p float="left">
-<img src="https://raw.githubusercontent.com/AustrianDataLAB/img/PacMan-1.png" width=45% height=45%>
-<img src="https://raw.githubusercontent.com/AustiranDataLAB/img/PacMan-Game.png" width=50% height=50%>
+<img src="https://raw.githubusercontent.com/AustrianDataLAB/img/main/tutorials/kubernetes/PacMan-1.png" width=45% height=45%>
+<img src="https://raw.githubusercontent.com/AustiranDataLAB/img/main/tutorials/kubernetes/PacMan-Game.png" width=50% height=50%>
 </p>
 This was taken from https://vzilla.co.uk/vzilla-blog/building-the-home-lab-kubernetes-playground-part-9
 
