@@ -43,36 +43,61 @@ This was taken from https://vzilla.co.uk/vzilla-blog/building-the-home-lab-kuber
 
 You have a valid student user and have logged into RancherUI https://rancher.k8s.dev.austrianopensciencecloud.org/
 
+
+Clone this git repository and change into the pacman directory 
+
+```bash
+git clone git@github.com:AustrianDataLAB/pacman.git
+cd pacman
+```
+
 ## Deployment
-### Note your username and path to kubeconf file
-your user starts with 'u-' and you can run in the RacherUI:
+
+You will need to set three environment variables in your local environment in
+order for the shell scripts to run correctly, and for the pacman application to
+be deployed to the cluster.
+
+1. `$KUBECONFIG`, the absolute path to the kube config file for the cluster.
+   Download from the RancherUI and save locally.
+2. `$pacman`, the target [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+   where the app will be deployed. Appears in the RancherUI, in dropdown menu
+   on the top right under "Only User Namespaces". Follows the form `u-XXXXX`
+   where `XXXXX` are random characters.
+3. `$host`, the DNS hostname for the cluster. In the url: 
+   "https://rancher.caas-0005.dev.austrianopencloudcommunity.org"
+   the DNS hostname is: "caas-0005.dev.austrianopencloudcommunity.org"
+
+### Create .env file 
+
+Modify the values as they apply to you and save them to a file named `.env` 
+
 ```bash
-kubectl get all 
+cat <<EOF > .env
+export KUBECONFIG=/home/user/k8s/clusters/caas-0005.dev/kubeconfig.yaml
+export pacman=u-XXXXXX
+export host=caas-0005.dev.austrianopencloudcommunity.org
+EOF
 ```
-that ll tell you, that your user 'u-***' doesnt have rights to see something. Copy this string!
 
-Download the kubeconfig file from the RancherUI, top right and save it somewhere on your laptop.
 
-```bash
-export KUBECONFIG=~/Downloads/local-2.yaml
-export pacman='u-r6hs89045r2f'
-
-```
 ### Using a Script for installation
-Clone repo, checkout branch=`main` 
-Then: run ```chmod +X pacman-install.sh``` and then run file ```./pacman-install.sh```
+
+Make the script executable, source the environment file and run the script.
+
 ```bash
-git clone git@github.com:entlein/pacman.git
-chmod +X pacman-install.sh
+chmod +x pacman-install.sh
+source .env
 ./pacman-install.sh
 ```
 
-
-
 #### Uninstall using a Script
+
 Run file `./pacman-uninstall.sh`. This will delete all objects created by `./pacman-install.sh`
 
-Alternatively, run `./pacman-uninstall.sh keeppvc`. This will delete all objects except for the pacman namespace and the persistent volume claim. You can use this to demonstrate persistence of the MongoDB data by installing, playing a game and recording a high score, then unininstalling with the `keeppvc` argument. You can then run the installation again and the high score will persist.
+Alternatively, run `./pacman-uninstall.sh keeppvc`. This will delete all objects except for 
+the pacman namespace and the persistent volume claim. You can use this to demonstrate persistence 
+of the MongoDB data by installing, playing a game and recording a high score, then unininstalling 
+with the `keeppvc` argument. You can then run the installation again and the high score will persist.
 
 #### Note of caution: Cert manager will only sign very few official certificates per 168 hrs 
 Before adding the ingress/cert, make sure you understand what that does and that you know how to keep your certificate 'safe'
