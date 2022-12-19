@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: ingress-$pacman.k8s.dev.austrianopensciencecloud.org
+  - host: ingress-$pacman.$host
     http:
       paths:
       - backend:

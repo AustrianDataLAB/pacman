@@ -1,6 +1,5 @@
 #!/bin/bash
-export KUBECONFIG=~/Downloads/local-3.yaml
-export pacman='u-rXXXXXXX'
+
 #kubectl delete -n $pacman -f security/rbac.yaml
 kubectl delete -n $pacman -f security/secret.yaml
 kubectl delete -n $pacman -f deployments/mongo-deployment.yaml
@@ -22,3 +21,5 @@ echo "cleaning up your files"
 rm persistentvolumeclaim/mongo-pvc.yaml
 rm security/secret.yaml
 rm ingress/ingress.yaml
+
+
