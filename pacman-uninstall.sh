@@ -21,5 +21,3 @@ echo "cleaning up your files"
 rm persistentvolumeclaim/mongo-pvc.yaml
 rm security/secret.yaml
 rm ingress/ingress.yaml
-
-
