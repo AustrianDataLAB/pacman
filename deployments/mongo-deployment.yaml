@@ -48,22 +48,22 @@ spec:
             secretKeyRef:
               key: database-user
               name: mongodb-users-secret
-                #- name: ALLOW_EMPTY_PASSWORD
-                #  value: "no"
-                #- name: MONGODB_SYSTEM_LOG_VERBOSITY
-                #  value: "0"
-                #- name: MONGODB_DISABLE_SYSTEM_LOG
-                #  value: "no"
-                #- name: MONGODB_DISABLE_JAVASCRIPT
-                #  value: "no"
-                #- name: MONGODB_ENABLE_JOURNAL
-                #  value: "yes"
-                #- name: MONGODB_PORT_NUMBER
-                #  value: "27017"
-                #- name: MONGODB_ENABLE_IPV6
-                #  value: "no"
-                #- name: MONGODB_ENABLE_DIRECTORY_PER_DB
-                #  value: "no"
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "no"
+        - name: MONGODB_SYSTEM_LOG_VERBOSITY
+          value: "0"
+        - name: MONGODB_DISABLE_SYSTEM_LOG
+          value: "no"
+        - name: MONGODB_DISABLE_JAVASCRIPT
+          value: "no"
+        - name: MONGODB_ENABLE_JOURNAL
+          value: "yes"
+        - name: MONGODB_PORT_NUMBER
+          value: "27017"
+        - name: MONGODB_ENABLE_IPV6
+          value: "no"
+        - name: MONGODB_ENABLE_DIRECTORY_PER_DB
+          value: "no"
         image: bitnami/mongodb:4.4.14
         imagePullPolicy: IfNotPresent
         name: mongo
