@@ -6,16 +6,19 @@ var _db;
 
 function Database() {
     this.connect = function(app, callback) {
+            // This no longer returns a db, instead it returns a client,
+            // against which there is a function called db() that returns
+            // db instance we are looking for. 
             MongoClient.connect(config.database.url,
                                 config.database.options,
-                                function (err, db) {
+                                function (err, client) {
                                     if (err) {
                                         console.log(err);
                                         console.log(config.database.url);
                                         console.log(config.database.options);
                                     } else {
-                                        _db = db;
-                                        app.locals.db = db;
+                                        _db = client.db(config.database.name);
+                                        app.locals.db = client.db(config.database.name);
                                     }
                                     callback(err);
                                 });
