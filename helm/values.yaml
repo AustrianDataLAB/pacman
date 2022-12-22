@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: mbwali/pacman # adlsregistrysbx.azurecr.io/tutorials/pacman
+  repository: ghcr.io/austriandatalab/pacman
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "sha-bd99c44"
 
 imagePullSecrets: []
 nameOverride: ""
