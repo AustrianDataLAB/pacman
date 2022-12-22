@@ -49,6 +49,10 @@ spec:
       - name: mongo-db
         persistentVolumeClaim:
           claimName: mongo-storage
+      securityContext: 
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
       containers:
       - name: mongo
         image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag | default .Chart.AppVersion }}"
@@ -73,11 +77,28 @@ spec:
             secretKeyRef:
               key: database-user
               name: {{ .Release.Name }}-mongo-auth
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "no"
+        - name: MONGODB_SYSTEM_LOG_VERBOSITY
+          value: "0"
+        - name: MONGODB_DISABLE_SYSTEM_LOG
+          value: "no"
+        - name: MONGODB_DISABLE_JAVASCRIPT
+          value: "no"
+        - name: MONGODB_ENABLE_JOURNAL
+          value: "yes"
+        - name: MONGODB_PORT_NUMBER
+          value: "27017"
+        - name: MONGODB_ENABLE_IPV6
+          value: "no"
+        - name: MONGODB_ENABLE_DIRECTORY_PER_DB
+          value: "no"
         ports:
           - name: mongo
             containerPort: 27017
         volumeMounts:
         - name: mongo-db
+          subPath: mongodb
           mountPath: /bitnami/mongodb/
         readinessProbe:
           exec:
@@ -87,3 +108,4 @@ spec:
             - -c
             - mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USERNAME -p $MONGODB_PASSWORD
               --eval="quit()"
+
