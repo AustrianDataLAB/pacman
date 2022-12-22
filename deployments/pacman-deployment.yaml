@@ -17,7 +17,7 @@ spec:
         name: pacman
     spec:
       containers:
-      - image: ghcr.io/austriandatalab/pacman:latest
+      - image: ghcr.io/austriandatalab/pacman:v0.0.4
         name: pacman
         ports:
         - containerPort: 8080
