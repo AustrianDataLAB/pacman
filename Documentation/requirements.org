@@ -1,0 +1,130 @@
+:PROPERTIES:
+:ID:       1d582ef6-f490-4ae8-b628-f70b9e03dc61
+:END:
+#+title: AOCC pacman requirements document
+
+* Requirements for the Austrian Open Cloud Community example app
+
+** Changelog
+
+| date             | author         | changes                       |
+|------------------+----------------+-------------------------------|
+| <2023-01-05 Thu> | Adam McCartney | initial version               |
+
+
+** Overview
+
+This document relays the important requirements for an example application to be
+used in the context of the 194.131 Hands-On Cloud Native course in the summer
+semester of 2023 at the Technical University of Vienna. Full details of course dates
+and submission deadlines can be found at the following link:
+https://tiss.tuwien.ac.at/course/courseDetails.xhtml?dswid=6877&dsrid=973&courseNr=194131&semester=2023S
+
+The application aims to server primarily two groups of users: students taking the course,
+and instructors teaching the course. The teaching is done by way of lectures that include
+practical labs. These happen twice a week on Tuesdays and Thursdays for blocks of 4 hours.
+
+The primary function of this document is to outline the work to be conducted related to the
+pacman application. There are a number of factors that issue the content, style and structure
+of the text that are worth mentioning at the outset.
+
+Pacman is at the time of writing a complete web-application that can be deployed to kubernetes.
+The application itself does not require any major updates or revisions. There are no requirements
+geared towards implementing application layer features. Instead, the requirements focus on the
+surrounding context of the pacman application: how it will be used. It essentially functions
+as an introduction to kubernetes for students. For a more detailed overview of the use cases,
+please refer to the use case document.
+
+The requirements propose features that improve Documentation and add or expand upon DevSecOps features.
+
+** Important Dates
+
+*** Working Stable Version Released
+DEADLINE: <2023-03-01 Wed> 
+All requirements proposed in this document shall be implemented before the 1 March 2023.
+
+*** Course begins
+<2023-03-07 Tue>
+
+*** Course ends
+<2023-06-27 Thu>
+
+
+* Functional Requirements
+
+1. Developer Environment
+  
+   The repository will contain the following features that aim to cover the use cases
+   related to running the application on a local developer machine. 
+
+1.1 Docker-compose script
+
+  The repository shall provide a docker-compose script to deploy the application locally.
+  This "development environment" will target docker-compose or podman running on a linux
+  machine. The docker-compose script will use the docker or podman daemon to set up a bridge
+  network and connect two containers.
+  Container 1: pacman application containing a browser based front-end and a nodejs backend
+  Container 2: mongodb instance that stores data received from the client
+  
+1.2 Documentation of docker-compose deployment
+
+  The repository shall provide clear documentation on the architecture outlined in paragraph 1.1.
+  The documentation will emphasize some of the elements of infrastructure that will be
+  new to the students. Precisely the document will aim to cover the features of the architecture
+  related to Network and Containers. For instance, the document will:
+    + outline *what* the underlying system is doing when it runs the docker-compose script,
+      depicted as a architectural diagram.
+    + provide introductory level details of *how* the system is creating the various layers
+      shown by the diagram.
+
+1.3 Creation of run-time exercises
+
+   The repository shall provide a documented exercise on how to inject configuration into
+   the pacman and mongodb containers at run time. This exercise will focus on the docker-compose
+   script mentioned above and be geared to work on the developer machines.
+
+2. Kubernetes Deployment
+   
+2.1 Documentation of kubernetes components
+
+   The repository shall provide a document containing
+   a) diagram of the architectural layers involved in the deployment
+   b) lexicon of newly introduced jargon that describes how the new
+   terms relate to underlying technology
+   c) description of how the containers are pulled into kubernetes
+   
+2.2 Directed exercises using kubectl and shell commands
+
+   The repository will provide an exercise outlining how to deploy the
+   application using kubectl and shell commands.
+
+2.3 Complete and published helm chart
+
+   The repository will include a complete helm chart that will be published
+   to the azure devops platform.
+
+2.4. Document showing how to use the helm chart.
+
+   
+3. DevSecOps Workflows
+
+3.1 The repo shall provide a documented exercise showing how to create a release.
+    This exercise shall cover the essentials of a branch commit merge workflow.
+
+3.2 The repo will contain a github actions file, showing how to achieve the following
+    in the context of a CI/CD workflow:
+    a) linter job
+    b) unit test job
+    c) integration test job using docker-compose
+    d) build docs job
+    e) build and publish container
+
+    
+* Non-functional requirements
+
++ Documentation will be included in the repository in *Markdown* format,
+  there will be a script included in the repository that leverages pandoc
+  to create pdf versions of the docs.
+
++ Documentation will be written in english, any images will be hosted
+  in the same way as the README.md doc (in a dedicated image repository)
