@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+  app:
+    image: ghcr.io/austriandatalab/pacman:v0.0.4
+    container_name: adls-pacman-app
+    env_file:
+      - local-dev-app.env
+    depends_on:
+      - db
+    networks:
+      - adls-pacman-net
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: wget --quiet --tries=3 --spider http://localhost:8080 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  db:
+    image: bitnami/mongodb:4.4.14
+    container_name: adls-pacman-mongodb
+    env_file:
+      - local-dev-mongodb.env
+    volumes:
+      - ./mongodb:/bitnami/mongodb
+    networks:
+      - adls-pacman-net
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo adls-pacman-mongodb:27017/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  adls-pacman-net:
+    driver: bridge
+
+volumes:
+  mongodb: {}
