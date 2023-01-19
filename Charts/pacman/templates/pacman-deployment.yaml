@@ -35,16 +35,16 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
           - name: http-server
-            containerPort: 8080
+            containerPort: {{ .Values.service.port }}
             protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: http-server
           readinessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: http-server
           env:
           - name: MONGO_SERVICE_HOST
             value: mongo
