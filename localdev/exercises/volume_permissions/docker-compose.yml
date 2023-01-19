@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    container_name: ldevex
+    command: busybox sleep 10000
+    volumes:
+      - ./data:/opt/data
+    restart: unless-stopped
+
+volumes:
+  app_data: {}
+
+networks:
+  ex_test:
+    driver: bridge
+

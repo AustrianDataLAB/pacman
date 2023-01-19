@@ -5,11 +5,14 @@ Tutorial Application for Teaching k8s on k8s
 Rewritten from the original to work on a hardened rke2
 (this is not claiming to be original work, I took it from : https://vzilla.co.uk/vzilla-blog/building-the-home-lab-kubernetes-playground-part-9 )
 
+# Documentation 
+
++ [Local development environment using docker compose](Documentation/localdev.md)
+
 ## Currently WIP
 
 ## Support and Community Slack
 https://aocc-public.slack.com/join/signup
-
 
 # Welcome to your Kubernetes Beginner Tutorial
 
@@ -27,9 +30,7 @@ At the end of this tutorial you will be able to:
 * generate a certificate using cert manager (or by hand, if someone has the patience)
 * work with `kubectl` , `RancherUI` and `Lens` 
 
-
 ## Tutorial Part I: Learn how a k8s-"deployment" works by running Pac-Man 
-
 
 Pac-Man the classic arcade game - modified/upgraded for our Rancher cluster so you may have fun modifying its components.
 
@@ -77,6 +78,7 @@ export KUBECONFIG=/home/user/k8s/clusters/caas-0005.dev/kubeconfig.yaml
 export pacman=u-XXXXXX
 export host=caas-0005.dev.austrianopencloudcommunity.org
 EOF
+
 ```
 
 
@@ -176,6 +178,7 @@ helm get manifest pacmanhelm -n $pacman
 [Read this blog post](https://veducate.co.uk/how-to-create-helm-chart/) to learn how the original Helm Chart was created.
 
 
+
 ## Architecture
 
 The application is made up of the following components:
@@ -193,9 +196,6 @@ The application is made up of the following components:
   * Type: ClusterIP
 * Ingress
   * Using a certificate generated via certman
-
-
-
 
 <img src="https://raw.githubusercontent.com/AustrianDataLAB/img/main/PacMan-1.png" width=50% height=50%>
 
