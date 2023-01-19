@@ -1,0 +1,94 @@
+:PROPERTIES:
+:ID:       91d883ec-5b04-499f-aa13-cdd7e0c6593d
+:END:
+#+title: AOCC pacman use case document
+
+* Use case document for AOCC Hands-On Cloud Native Course
+
+** Changelog
+| date             | author         | changes         |
+|------------------+----------------+-----------------|
+| <2023-01-04 Wed> | Adam McCartney | initial version |
+
+** User Profiles
+
+*** Students
+
+**** Previous knowledge
++ Students are third level students at a technical university.
++ Have basic understanding of Linux sysadmin
++ Understand the basic Operating System model (CPU, Memory, Storage)
++ Can write at least one scripting language
++ Have used git
++ Know about networking protocols TCP/IP
++ Have used package managers (either as consumers or producers of packages)
++ Know at least one high level programming language
+
+**** Additionally
++ May or may not have written and deployed complete web applicaions
++ May or may not have experimented with linux container technology
++ Wants a challenging and engaging way to discover cloud technology
++ Would really like to know why cloud technology in important.
+
+*** Instructor
++ Hopefully knows a little bit more than the students on all of the topics listed above
++ Is passionate about cloud native technology and wants to inspire the same passion in their students
++ Is sensitive to the unique challenges of presenting learning material related to
+  new technology (principles and practices)
++ May or may not have written and deployed complete web applications
++ Would really like to express why cloud technology is so important.
++ When does cloud make sense?
+
+** Student Use Cases
+
+1. Wants to run the application locally to see it working up close.
+  1.1 Wants an overview of the infrastructure layers required for the application to run
+      e.g. possibly deploy a developer environment using docker-compose,
+           in order to see a host machine running a docker (podman) daemon,
+           two guest containers & a bridge
+  1.2 Wants to see the practical implications of running a containerized application,
+      i.e. what aspects might a developer not have considered? (hint: anything to do with infrastructure)
+  1.3 Wants to understand the purpose of having stateless containers & how to get config into a container
+  1.4 Wants to understand alternative (application) architectures
+            
+2. Wants to deploy the app to "production" ... a kubernetes cluster
+  2.1 Wants to understand how the infrastucture layers map to kubernetes
+  2.2 Want to know what all the new jargon means (namespace, pod, deployment, service, configmap, secret, ingress)
+      what is this jargon good for?
+  2.3 Wants to learn to use the essential tools (kubectl, helm)
+  2.4 Wants to understand how to build and publish an image from a CI/CD pipeline?
+  
+3. Wants to implement a new feature
+  3.1 Wants to understand branch, commit, merge workflow
+
+4. Supply chain sec
+
+  
+** Instructor Use Cases 
+
+1. Wants to depict the architecture of a web-app prepared for cloud
+   1.1 Wants the students to discover a use case for cloud technology,
+       by way of a working application.
+   1.2 Wants to explore topics relevant for cloud deployments by presenting topics
+       related to: containers (build/run time differences),
+                   infrastructure (network and storage) 
+   1.3 Wants to describe basic concepts like "statelessness", "config injection", "permissions".
+   1.4 Wants to explore alternative (application) architectures that would suit cloud deployments,
+       and talk about possible use cases for these, when do they make sense?
+
+2. Wants to show how a production kubernetes works
+   2.1 Wants to give a clear depiction of the infrastructure layers
+   2.2 Wants to introduce new terms needed for understanding k8s
+   2.3 Wants to give a practical introduction to working with new tools
+   2.4 Wants to show the relationship between a publically hosted repository and a running deployment
+       (CI/CD)
+   
+3. Wants to draw attention to some common git workflows
+
+
+** Non Use Cases
+
++ We do not want to go deeply into the details of linux isolation mechanisms
+  (cgroups, network namespaces, etc.)
+
+

@@ -1,0 +1,97 @@
+:PROPERTIES:
+:ID:       9aebb19c-8248-4a6f-8422-2509b10a6493
+:END:
+#+title: AOCC Hands-On Vision and Scope Document
+
+* Visions and Scope Document
+
+** Changelog
+
+| date             | author         | changes                       |
+|------------------+----------------+-------------------------------|
+| <2023-01-02 Mon> | Adam McCartney | initial version               |
+| <2023-01-03 Tue> | Adam McCartney | add docs, downgrade frsc prio |
+
+
+
+** Problem space
+
+*** Where are we going and why?
+**** Problem Domain
+
++ We need a sample application for teaching cloud native technolgy in summer semester 2023 and beyond.
+  The course is 194.131 Hands-On Cloud Native
+  https://tiss.tuwien.ac.at/course/courseDetails.xhtml?dswid=6877&dsrid=973&courseNr=194131&semester=2023S
+
++ We need an "on-ramp" for lecturers and students who would would like to start using
+  our cloud infrastructure offering. The kubernetes stack is relatively complex. However,
+  it is the core technology in the AOCC offering. In order for the core value propositions
+  to succeed, we need to tame this complexity and give prospective users the confidence to succeed.
+
++ We want to show the journey from testing locally with something like docker-compose to running in the cloud
+  on a cluster. Along the way, we would like to reinforce important ideas related to:
+  - containers
+  - networking
+  - development process
+
++ We want a bite-sized sample that we can return to whenever we need to grasp core concepts
+  
+*** How do we judge success?
+
++ First time (cloud learners) users are provided with the basic raw materials to be equipped
+  with a functional understanding of how to use the system. i.e. They know where to look for
+  information and how to begin solving their own questions.
+  - ~ 90th percentile: can expand upon the patterns they are shown within the course
+                       can create variations of application deployments for kubernetes.
+  - ~ 80th percentile: have a solid understanding of most of the concepts covered and
+                       can interact with kubernetes at the application level in the way they are shown.
+  - ~ 60th percentile: gain a basic understanding of the core tenets of using kubernetes from the
+                       perspective of deploying applications.
+    
++ Veteran users (cloud instructors) have a clear syllabus to which they can use in the process of teaching.
+
+
+** Minimal Viable Product/Service ("MVP")
+
+*** What needs to be true in order for a prototype to be ready for release?
+
+1. There is a complete web-app ready for deployment in the following ways:
+   - as part of a local development environment using docker-compose
+   - as a set of kubernetes deployments / services wrapped in shell scripts
+   - as a stable helm chart
+
+2. A set of documents for students and teachers that document the technologies used by the application.
+   These docs can serve as a basis for lecture notes.
+   - topics: [application architecture,
+              git workflow,
+              CI/CD with github actions,
+              containers (linux features required),
+              kubernetes deployment,
+              network,
+              security]
+     
+3. We need a stable cloud-native infrastructure for deploying the application
+   - FRSCA stack needs to be deployable and we need to be able to build
+     and IMAGE using Tekton, and to host the helm chart.
+   - harbor needs to be correctly deployed
+   - i.e. we need to demonstrate both of these working  
+
+*** What crucial factors are we missing?
+- The local development setup 
+- The helm chart is missing an ingress.
+- The cloud native stuff (FRSCA and HARBOR).
+
+** Continued feedback
+
+*** What is the key question we would ask to understand if we are on the right track?
+
++ Can I teach with this?
++ Will the students understand what I'm on about?
++ Are the explanations as simple as possible?
+
+*** Who are the alpha testers that we can use for validating our assumptions?
+
++ AOCC team members can test before we go live (date T.B.C)
++ Participants in the course during the first semester, both teaching staff and students
+  
+
