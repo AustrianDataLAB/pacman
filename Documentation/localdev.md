@@ -93,7 +93,7 @@ named app and db.
 ```yaml
 services:
   app:
-    image: ghcr.io/austriandatalab/pacman:v0.0.5
+    image: ghcr.io/austriandatalab/pacman:v0.0.6
     container_name: adls-pacman-app
     env_file:
       - local-dev-app.env

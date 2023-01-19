@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/austriandatalab/pacman
   pullPolicy: IfNotPresent
-  tag: "v0.0.5"
+  tag: "v0.0.6"
 
 imagePullSecrets: []
 nameOverride: ""
