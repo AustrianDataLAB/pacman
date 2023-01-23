@@ -1,6 +1,0 @@
-apiVersion: v2
-name: pacman
-description: A Helm chart to provide pacman deployment.
-type: application
-version: 0.0.6
-appVersion: "0.0.6"
