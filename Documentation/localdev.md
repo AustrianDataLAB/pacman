@@ -9,7 +9,7 @@ Required tools:
 + docker
 + docker-compose
 
-optional tools:
+Optional tools:
 + gnu make
 
 ## Docker
@@ -38,7 +38,7 @@ setup steps on a system before building a program. It involves writing a
 `Makefile` that specifies the required build targets and their dependencies. 
 In this tutorial, it is only being used to wrap a few shell commands. 
 Exactly what commands are being used will be documented below, these can also be
-run as shell scripts, incase you prefer not to install make.
+run as shell scripts, in case you prefer not to install make.
 
 + [gnu make docs](https://www.gnu.org/software/make/manual/make.html)
 
@@ -47,7 +47,7 @@ run as shell scripts, incase you prefer not to install make.
 
 You can leverage an existing target in the makefile to set up persistent storage
 for local development. The `data_volume` target is designed to make a new
-subdirectory named `./localdev/data`. After creating the subdirectory, we need
+sub directory named `./localdev/data`. After creating the sub directory, we need
 to set the correct permissions.
 
 Set up the data volume either by running the following make command:
@@ -130,13 +130,13 @@ services:
 ```
 
 The following table offers a brief description of each key and the function of
-the associated value, as contained within a service definitihttps://docs.docker.com/engine/reference/commandline/exec/on. 
+the associated value, as contained within a service definition: 
 
 | key            | function                                             |
 |----------------|------------------------------------------------------|
 | image          | location of the container image to be downloaded     |
 | container_name | use a predefined name for ease of reference          |
-| env_file       | sets variables in the containers runtime environment |
+| env_file       | sets variables in the containers run time environment|
 | volumes        | map a storage volume in the form <host>:<container>  |
 | networks       | the service should be available on these networks    |
 | ports          | the service exposes these ports                      |
@@ -148,8 +148,8 @@ the associated value, as contained within a service definitihttps://docs.docker.
 
 #### adls-pacman-app
 
-The app itself is a simple nodejs application that has two primary functions: 
-to serve the broswer-based frontend of our application and communicate with
+The app itself is a simple node application that has two primary functions: 
+to serve the browser-based front end of our application and communicate with
 the database via an API. 
 
 The actual container image is something that we also specify in the top-level
@@ -189,19 +189,19 @@ process is instead run by user 1001.
 ### Environment variables
 
 It is possible to load environment variables into a container at build time and
-at runtime. As a general rule of thumb, it's good to be mindful about exactly
+at run time. As a general rule of thumb, it's good to be mindful about exactly
 what type of information you place into a container at build time. Any
 environment variables that are placed into the container when the container is
-being built typically will need to be hardcoded into the code that is used to
+being built typically will need to be hard coded into the code that is used to
 generate the container image. Any environment variables specified at this stage
 will be persistent and visible to anyone who uses the container. So, it's
 important to only encode information that is intended to be constant across all
-possible instance of the application and also publically viewable. As a rule, 
-you would never want to put secrets into a container at buildtime. 
+possible instance of the application and also publicly accessible. As a rule, 
+you would never want to put secrets into a container at build time. 
 
 Most applications will however require some extra configuration. Typically this
-config is injected into the container at runtime. In our docker-compose example
-the way that we do this is by using environment files. The content of these
+configuration data is injected into the container at run time. In our docker-compose 
+example the way that we do this is by using environment files. The content of these
 files is for didactic purposes only and they do not contain any information that
 we don't mind being public. For this reason we are showing their complete
 contents below. Normally you would be much more secretive about your secrets.
@@ -284,4 +284,3 @@ directory.
 1. Run the container using the docker-compose command `sudo docker-compose up`
 2. Try to pipe the required data to the file: `ip addr > /opt/data/net_info.txt`
 3. Fix the permission denied error.
-
