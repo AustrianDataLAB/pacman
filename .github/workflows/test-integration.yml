@@ -11,4 +11,4 @@ jobs:
       - name: Setup
         run: sudo rm -rf ./mongodb && mkdir ./mongodb && sudo chown -R 1001:1001 ./mongodb
       - name: Test 
-        run: docker run pacman-app-integration /bin/bash -c "npm run test-integration" 
+        run: docker exec pacman-app-integration /bin/bash -c "npm run test-integration" 

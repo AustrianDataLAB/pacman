@@ -2,7 +2,6 @@ version: '2'
 
 services:
   app:
-    image: pacman-local:latest
     build:
       context: .
       dockerfile: ./Dockerfile
