@@ -24,4 +24,3 @@ spec:
   - hosts:
     - ingress-$pacman.$host    
     secretName: $pacman-ingress-tls
-
