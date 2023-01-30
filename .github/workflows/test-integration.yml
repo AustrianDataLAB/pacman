@@ -1,0 +1,17 @@
+name: Run integration test using docker-compose
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the localdev environment
+        run: docker-compose -f docker-compose.test-integration.yml up -d 
+      - name: Setup
+        run: |
+          DB_VOLUME="$(pwd)/mongodb" \
+          [ -d "$DB_VOLUME" ] || mkdir "$DB_VOLUME" \
+          sudo chown -R 1001:1001 "$DB_VOLUME"
+      - name: Test 
+        run: docker run pacman-app-integration /bin/bash -c "npm run test-integration" 

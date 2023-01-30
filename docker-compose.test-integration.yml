@@ -1,0 +1,63 @@
+version: '2'
+
+services:
+  app:
+    image: pacman-local:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: pacman-app-integration
+    environment:
+      - MONGO_SERVICE_HOST=pacman-mongodb-integration 
+      - MONGO_USE_SSL=false
+      - MONGO_AUTH_USER=tester
+      - MONGO_AUTH_PWD=opensecret
+    depends_on:
+      - db
+    networks:
+      - adls-pacman-net
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: wget --quiet --tries=3 --spider http://localhost:8080 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  db:
+    image: bitnami/mongodb:4.4.14
+    container_name: pacman-mongodb-integration
+    environment:
+      - BITNAMI_DEBUG=false
+      - MONGODB_ROOT_PASSWORD=notarealpassword 
+      - MONGODB_DATABASE=pacman
+      - MONGODB_USERNAME=tester 
+      - MONGODB_PASSWORD=opensecret
+      - ALLOW_EMPTY_PASSWORD=no
+      - MONGODB_SYSTEM_LOG_VERBOSITY=0
+      - MONGODB_DISABLE_SYSTEM_LOG=no
+      - MONGODB_DISABLE_JAVASCRIPT=no
+      - MONGODB_ENABLE_JOURNAL=yes
+      - MONGODB_PORT_NUMBER=27017
+      - MONGODB_ENABLE_IPV6=no
+      - MONGODB_ENABLE_DIRECTORY_PER_DB=no
+    volumes:
+      - ./mongodb:/bitnami/mongodb
+    networks:
+      - adls-pacman-net
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo adls-pacman-mongodb:27017/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  adls-pacman-net:
+    driver: bridge
+
+volumes:
+  mongodb: {}

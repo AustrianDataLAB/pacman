@@ -6,13 +6,18 @@
   "main": "bin/server.js",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon .",
+    "test-integration": "mocha --timeout 40000 --exit test/integration.js",
+    "mocha": "npm run mocha"
   },
   "license": "GPLv3",
   "dependencies": {
     "body-parser": "^1.20.0",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
     "express": "^4.16.3",
     "jade": "^1.11.0",
+    "mocha": "^10.2.0",
     "mongodb": "^4.5.0"
   }
 }
