@@ -9,9 +9,6 @@ jobs:
       - name: Build the localdev environment
         run: docker-compose -f docker-compose.test-integration.yml up -d 
       - name: Setup
-        run: |
-          DB_VOLUME="$(pwd)/mongodb" \
-          [ -d "$DB_VOLUME" ] || mkdir "$DB_VOLUME" \
-          sudo chown -R 1001:1001 "$DB_VOLUME"
+        run: sudo rm -rf ./mongodb && mkdir ./mongodb && sudo chown -R 1001:1001 ./mongodb
       - name: Test 
         run: docker run pacman-app-integration /bin/bash -c "npm run test-integration" 
