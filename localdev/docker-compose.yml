@@ -25,7 +25,7 @@ services:
     env_file:
       - local-dev-mongodb.env
     volumes:
-      - ./mongodb:/bitnami/mongodb
+      - mongodb:/bitnami/mongodb
     networks:
       - adls-pacman-net
     ports:
