@@ -242,17 +242,63 @@ TODO: set the authentication in mongo-express properly
 ## Using Helm to install
 First, make sure you uninstalled everything.
 
-Now, there are two options, depending on how much time you want to spend, 
-the bare bone approach is the following:
+There are six possible ways to install a helm chart outlined in the [helm docs](https://helm.sh/docs/helm/helm_install/)
+We're going to briefly cover one of the more simple variants here. In a
+nutshell, a helm chart is a 
 
+### Bare bones helm 
+
+It's common to create a specific directory to house the helm charts within your,
+this is typically a directory titled `charts` or `Charts` in the top level
+directory of the repository that houses your code and tests.
+
+From the top level of your repository: 
 ````bash
-helm create pacman-rancher
+helm create charts/pacman-custom
+```
+The `helm create` command creates a directory and populates it with files
+according to a standardized structure. Again, you can read about the [helm
+create](https://helm.sh/docs/helm/helm_create/) command in the helm
+documentaion.
 
-edit to your heart s content
+For the purposes of our pacman application, it's instructive to read
+[this blog post](https://veducate.co.uk/how-to-create-helm-chart/) to learn how
+the original Helm Chart was created.
 
-helm package ~/gitrepos/pacman/pacman-rancher/. -d ~/gitrepos/pacman/helm
-Successfully packaged chart and saved it to: /Users/croedig/gitrepos/pacman/helm/pacman-rancher-0.1.0.tgz
+Once you've added the necessary files and values to the chart, it's time to
+package the chart. This involves creating an archive that is later used to deploy
+the chart onto the cluster.
 
+```bash
+helm package charts/pacman-custom -d charts
+```
+
+This should result in the archive `charts/pacman-custom-0.1.0.tgz`. The
+resulting archive can then be applied to the cluster. The following assumes that
+you are using the same environment variables established in the preceeding
+sections. The `-n` flag is shorthand for `namespace` the variable `$pacman`
+references a specific namespace on the cluster.
+
+It's illustrative to tell helm to do a "dry run" of the installation first, the
+following command will output the full contents of the chart that will be
+applied to the cluster: 
+
+```bash
+helm install pacman-custom charts/pacman-custom-0.1.0.tgz -n $pacman --dry-run
+```
+
+If you are satisfied with the output, you can install the chart to the cluster
+with the following command:
+```bash
+helm install pacman-custom charts/pacman-custom-0.1.0.tgz -n $pacman
+```
+To uninstall the chart, you can use the following command:
+
+```bash
+helm uninstall pacman-custom -n $pacman 
+```
+
+```bash
 #Do this only if you really feel like you want to publish a package, normally we dont ever do this from localhost
 #this is more to demonstrate that you *could* do it this way, please use a CI/CD pipeline for anything real world
 helm repo index ~/gitrepos/pacman/helm --url http://adlsexample.org/charts
@@ -277,4 +323,3 @@ For further commands with helm, please read the upstream documentation at helm.s
 helm ls pacmanhelm -n $pacman
 helm get manifest pacmanhelm -n $pacman
 ````
-[Read this blog post](https://veducate.co.uk/how-to-create-helm-chart/) to learn how the original Helm Chart was created.
