@@ -69,15 +69,23 @@ spec:
         name: mongo
         readinessProbe:
           exec:
-           command:
-            - /bin/sh
-            - -i
-            - -c
-            - mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USERNAME -p $MONGODB_PASSWORD
-              --eval="quit()"
-          failureThreshold: 6
+            command:
+              - /bitnami/common-scripts/readiness-probe.sh
           initialDelaySeconds: 5
-          periodSeconds: 5
+          periodSeconds: 20
+        livenessProbe:
+          exec:
+            command:
+              - /bitnami/common-scripts/ping-mongodb.sh
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        startupProbe:
+          exec:
+            command:
+              - /bitnami/common-scripts/startup-probe.sh
+          initialDelaySeconds: 5
+          failureThreshold: 5
+          periodSeconds: 10
         ports:
         - containerPort: 27017
           name: mongo
@@ -91,6 +99,8 @@ spec:
           - name: mongo-db
             subPath: mongodb
             mountPath: /bitnami/mongodb/
+          - name: pacman-mongo-common-scripts-volume
+            mountPath: /bitnami/common-scripts/
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -100,10 +110,10 @@ spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 30
       volumes:
-      - configMap:
-          defaultMode: 360
+      - name: pacman-mongo-common-scripts-volume
+        configMap:
+          defaultMode: 0755
           name: pacman-mongo-common-scripts
-        name: common-scripts
       - name: mongo-db
         persistentVolumeClaim:
           claimName: mongo-storage

@@ -9,6 +9,7 @@ envsubst < ingress/ingress.txt.yaml > ingress/ingress.yaml
 #kubectl apply -n $pacman -f security/rbac.yaml
 kubectl apply -n $pacman -f security/secret.yaml
 kubectl apply -n $pacman -f persistentvolumeclaim/mongo-pvc.yaml
+kubectl apply -n $pacman -f configmap/pacman-mongo-common-scripts.yaml
 kubectl apply -n $pacman -f deployments/mongo-deployment.yaml
 while [ "$(kubectl get pods -l=name='mongo' -n $pacman -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
    sleep 5
