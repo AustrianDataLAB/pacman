@@ -3,4 +3,4 @@ name: pacman-rancher
 description: A Helm chart to provide pacman deployment.
 type: application
 version: 0.2.1
-appVersion: 0.2.1
+appVersion: "0.0.6"
