@@ -19,6 +19,7 @@ jobs:
         run: docker exec pacman-app-integration /bin/bash -c "npm run test-integration" 
       - name: Set short-form sha env property
         id: customvars
-        run: echo "sha_short=sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: |
+          echo "sha_short=sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Test short-form sha env property
-        run: echo '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.customvars.outputs.sha_short }}'
+        run: echo 'ghcr.io/austriandatalab/pacman:${{ steps.customvars.outputs.sha_short }}'
