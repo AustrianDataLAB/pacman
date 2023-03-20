@@ -1,5 +1,11 @@
 name: Run integration test using docker-compose
 on: push
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  CUSTOM_REGISTRY: 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,3 +18,9 @@ jobs:
         run: sudo rm -rf ./mongodb && mkdir ./mongodb && sudo chown -R 1001:1001 ./mongodb
       - name: Test 
         run: docker exec pacman-app-integration /bin/bash -c "npm run test-integration" 
+      - name: Set short-form sha env property
+        id: customvars
+        run: |
+          echo "sha_short=sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Test short-form sha env property
+        run: echo 'ghcr.io/austriandatalab/pacman:${{ steps.customvars.outputs.sha_short }}'
