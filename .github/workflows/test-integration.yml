@@ -1,11 +1,6 @@
 name: Run integration test using docker-compose
 on: push
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-  CUSTOM_REGISTRY: 
-
 jobs:
   build:
     runs-on: ubuntu-latest
