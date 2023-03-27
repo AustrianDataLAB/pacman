@@ -9,6 +9,6 @@ entries:
     name: pacman-rancher
     type: application
     urls:
-    - pacman-rancher-0.2.1.tgz
+    - https://github.com/AustrianDataLAB/pacman/releases/tag/pacman-rancher-0.2.1
     version: 0.2.1
 generated: "2023-01-20T11:21:54.345614301+01:00"
