@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
     nginx.ingress.kubernetes.io/auth-signin: >-
       https://oauth.$dnsa.$env.austrianopencloudcommunity.org/oauth2/start?rd=https://$host$request_uri
     nginx.ingress.kubernetes.io/auth-url: https://oauth.$dnsa.$env.austrianopencloudcommunity.org/oauth2/auth
