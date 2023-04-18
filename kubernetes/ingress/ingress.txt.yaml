@@ -2,15 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetets.io/auth-url: "https://oauth.pacman-$pacman.$host"
-    nginx.ingress.kubernetes.io/auth-signin: "https://oauth.pacman-$pacman.$host"
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
+    nginx.ingress.kubernetes.io/auth-signin: >-
+      https://oauth.$dnsa.$env.austrianopencloudcommunity.org/oauth2/start?rd=https://$host$request_uri
+    nginx.ingress.kubernetes.io/auth-url: https://oauth.$dnsa.$env.austrianopencloudcommunity.org/oauth2/auth
     ingress.kubernetes.io/whitelist-source-range: $ip_whitelist_range
   name: ingress-$pacman
   namespace: $pacman
 spec:
   ingressClassName: nginx
   rules:
-  - host: ingress-$pacman.$host
+  - host: $pacman.$dnsa.$env.austrianopencloudcommunity.org
     http:
       paths:
       - backend:
@@ -22,5 +24,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - ingress-$pacman.$host    
+    - $pacman.$dnsa.$env.austrianopencloudcommunity.org    
     secretName: $pacman-ingress-tls

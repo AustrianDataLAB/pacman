@@ -1,0 +1,3 @@
+kubernetes/ingress/ingress.yaml
+kubernetes/persistentvolumeclaim/mongo-pvc.yaml
+kubernetes/security/secret.yaml
