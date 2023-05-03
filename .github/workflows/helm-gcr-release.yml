@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - features/helm-gcr
+      - main
 
 env:
   HELM_EXPERIMENTAL_OCI: 1 #enable OCI support
@@ -13,22 +13,38 @@ jobs:
     name: publish gcr
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        name: checkout repo
+      - name: Checkout source code                   # Checkout source code
+        uses: 'actions/checkout@v2'
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Get specific changed files                  # To check if any files changed in charts/pacman-rancher directory
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v14.5
+        with:
+          since_last_remote_commit: true
+          files: |
+            charts/pacman-rancher/*
       
       - name: install helm
+        if: steps.changed-files-specific.outputs.any_modified == 'true'
         uses: Azure/setup-helm@v1
         with:
           # Version of helm
           version: ${{ env.HELM_VERSION_TO_INSTALL }} # default is latest # need to pin this if it works
+
       - name: login to acr using helm
+        if: steps.changed-files-specific.outputs.any_modified == 'true'
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
       - name: save helm chart to local registry
+        if: steps.changed-files-specific.outputs.any_modified == 'true'
         run: |
           helm chart save ${{ github.workspace }}/charts/pacman-rancher ${{ env.GCR_IMAGE }}:${{ github.sha }}
 
-      - name: publish chart to acr
+      - name: publish chart to gcr
+        if: steps.changed-files-specific.outputs.any_modified == 'true'
         run: |
           helm chart push ${{ env.GCR_IMAGE }}:${{ github.sha }}
