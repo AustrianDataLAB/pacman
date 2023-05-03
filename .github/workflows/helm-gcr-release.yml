@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - feautres/helm-gcr
+      - features/helm-gcr
 
 env:
   HELM_EXPERIMENTAL_OCI: 1 #enable OCI support
