@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout source code                   # Checkout source code
-        uses: 'actions/checkout@v2'
+        uses: 'actions/checkout@v3'
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
@@ -23,13 +23,9 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Get specific changed files                  # To check if any files changed in charts/pacman-rancher directory
-        id: changed-files-specific
-        uses: tj-actions/changed-files@v14.5
-        with:
-          since_last_remote_commit: true
-          files: |
-            charts/pacman-rancher/*
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
 
 
       - name: Run chart-releaser
