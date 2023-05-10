@@ -51,7 +51,7 @@ jobs:
 
       - name: Run chart-releaser
         if: steps.changed-files-specific.outputs.any_modified == 'true'
-        uses: helm/chart-releaser-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.5.0
         with:
           charts_dir: charts
         env:
