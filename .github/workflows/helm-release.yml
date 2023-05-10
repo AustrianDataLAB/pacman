@@ -16,6 +16,12 @@ jobs:
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
+          
+          
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Get specific changed files                  # To check if any files changed in charts/pacman-rancher directory
         id: changed-files-specific
@@ -25,29 +31,6 @@ jobs:
           files: |
             charts/pacman-rancher/*
 
-      - name: Automated Version Bump                      # Bump version in package.json
-        if: steps.changed-files-specific.outputs.any_modified == 'true'
-        id: version-bump
-        uses: 'phips28/gh-action-bump-version@master'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PACKAGEJSON_DIR:  'charts/pacman-rancher'
-        with:
-          skip-tag:  'true'
-          commit-message: 'CI: Bump Helm chart version to {{version}}'
-
-      - name: update Chart.yaml                              # Update chart.yaml with new version and other fields
-        if: steps.changed-files-specific.outputs.any_modified == 'true'
-        working-directory: charts/pacman-rancher
-        run: |
-          sed -i'.oldVersion' -e "/^version:/s;[^ ]*$;${{ steps.version-bump.outputs.newTag }};" Chart.yaml
-          sed -i'.oldAppVersion' -e "/^appVersion:/s;[^ ]*$;${{ steps.version-bump.outputs.newTag }};" Chart.yaml
-
-      - name: commit the new Chart.yml                   # commit the new Chart.yaml to main branch
-        if: steps.changed-files-specific.outputs.any_modified == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Automated Change
 
       - name: Run chart-releaser
         if: steps.changed-files-specific.outputs.any_modified == 'true'
