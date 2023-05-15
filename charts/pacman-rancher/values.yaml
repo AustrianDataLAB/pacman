@@ -24,9 +24,13 @@ serviceAccount:
 
 podAnnotations: {}
 
+#Exercise: take this value out and see what happens with it, also 
+# Where in the helm chart is it being used?
 podSecurityContext:
   fsGroup: 1000
 
+#Exercise: take this value out and see what happens with it, also 
+# Where in the helm chart is it being used?
 securityContext:
   capabilities:
     drop:
@@ -39,13 +43,21 @@ service:
   port: 8080 
   type: ClusterIP
 
+
+#Exercise: fill out the ingress annotations correctly
+# it needs a certificate
+# use the oauth proxy -> what does it do?
+# whitelist source range -> what does it do? is it a zero-trust measure -> discuss!
 ingress:
   enabled: false 
   className: "nginx"
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
+    cert-manager.io/cluster-issuer: <issuer>
+    nginx.ingress.kubernetes.io/auth-url: "https://oauth.#{DNSA}#.#{ENV}#.#{TLD}#/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://oauth.#{DNSA}#.#{ENV}#.#{TLD}#/oauth2/start?rd=https://$host$request_uri"
+    nginx.ingress.kubernetes.io/whitelist-source-range: #{default_range}#
   hosts:
-    - host: <your-host-name>
+    - host: <your-host-name>.#{DNSA}#.#{ENV}#.#{TLD}#
       paths:
         - path: /
           pathType: Prefix
@@ -56,7 +68,7 @@ ingress:
             number: 8080
   tls:
   - hosts:
-    - <your-host-name> 
+    - <your-host-name>.#{DNSA}#.#{ENV}#.#{TLD}# 
     secretName: pacman-ingress-tls-cert
 
 resources: {}

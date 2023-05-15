@@ -1,0 +1,45 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-demo-1
+  namespace: default
+#  annotations:
+#    key: string
+#  labels:
+#    key: string
+spec:
+#  additionalOutputFormats:
+#    - type: string
+  dnsNames:
+    - demo1.caas-0002.beta.austrianopencloudcommunity.org
+#  duration: string
+#  emailAddresses:
+#    - string
+#  encodeUsagesInRequest: boolean
+#  ipAddresses:
+#    - string
+  isCA: false
+  issuerRef:
+#    group: string
+#    kind: string
+    kind: ClusterIssuer
+    name: selfsigned-issuer
+#  keystores:
+#    jks:
+#      create: boolean
+#      passwordSecretRef:
+#        key: string
+#        name: string
+#    pkcs12:
+#      create: boolean
+#      passwordSecretRef:
+#        key: string
+#        name: string
+#  privateKey:
+#    algorithm: string
+#    encoding: string
+#    rotationPolicy: string
+#    size: int
+#  renewBefore: string
+#  revisionHistoryLimit: int
+  secretName: cert-demo-1
