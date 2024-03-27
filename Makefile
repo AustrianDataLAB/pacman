@@ -15,4 +15,4 @@ docker-deskop:
 
 .PHONY:
 clean:
-	rm -rf $(MONGODB_DATA_VOLUME)
+	docker volume rm mongodb
