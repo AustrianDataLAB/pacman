@@ -19,15 +19,30 @@ tasks:
 
   envsubst:
     cmds:
-      - export pacman={{.pacman}}
-      - envsubst < ../kubernetes/persistentvolumeclaim/mongo-pvc.txt.yaml > manifests/mongo-pvc.yaml
-      - envsubst < ../kubernetes/security/secret.txt.yaml > manifests/secret.yaml
+      - |
+        export PACMAN="{{.pacman}}"
+        sed "s/\$pacman/$PACMAN/g" ../kubernetes/persistentvolumeclaim/mongo-pvc.txt.yaml > manifests/mongo-pvc.yaml
+        sed "s/\$pacman/$PACMAN/g" ../kubernetes/security/secret.txt.yaml > manifests/secret.yaml
     silent: false
 
   deploy-manifests:
     cmds:
-      - for i in manifests/*; do kubectl apply -f $i; done
+      - for i in manifests/*; do kubectl apply -f $i -n {{.pacman}}; done
 
   delete-manifests:
     cmds:
-      - for i in manifests/*; do kubectl delete -f $i; done
+      - for i in manifests/*; do kubectl delete -f $i -n {{.pacman}}; done
+
+  port-forward:
+    cmds:
+      - kubectl port-forward -n {{.pacman}} service/pacman 8000:80 
+    silent: false
+
+  ephemeral-debug:
+    cmds:
+      - |
+        export POD_NAME=$(kubectl get pods -n {{.pacman}} -l name=mongo -o jsonpath="{.items[0].metadata.name}")
+        kubectl debug -n {{.pacman}} -it $POD_NAME --image=alpine --  bash
+        #read the secret.yaml to understand where these values are coming from:
+        #kubectl debug -n {{.pacman}} -it $POD_NAME --image=mongo -- sh -c "mongosh mongodb://blinky:pinky@localhost:27017/pacman"
+    silent: false
