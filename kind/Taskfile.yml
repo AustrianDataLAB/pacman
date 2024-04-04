@@ -1,0 +1,33 @@
+
+version: '3'
+
+vars:
+  #KUBECONFIG: /home/runner/.kube/config
+  pacman: constanze
+
+tasks:
+  cluster:
+    cmds:
+      - kind create cluster 
+    silent: false
+
+
+  namespace:
+    cmds:
+      - kubectl create namespace {{.pacman}}
+    silent: false
+
+  envsubst:
+    cmds:
+      - export pacman={{.pacman}}
+      - envsubst < ../kubernetes/persistentvolumeclaim/mongo-pvc.txt.yaml > manifests/mongo-pvc.yaml
+      - envsubst < ../kubernetes/security/secret.txt.yaml > manifests/secret.yaml
+    silent: false
+
+  deploy-manifests:
+    cmds:
+      - for i in manifests/*; do kubectl apply -f $i; done
+
+  delete-manifests:
+    cmds:
+      - for i in manifests/*; do kubectl delete -f $i; done
