@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+  ping-mongodb.sh: |
+    #!/bin/bash
+    mongo --port $MONGODB_PORT_NUMBER --eval "db.adminCommand('ping')"
+  readiness-probe.sh: |
+    #!/bin/bash
+    mongo --port $MONGODB_PORT_NUMBER --eval 'db.isMaster().ismaster || db.isMaster().secondary' | grep -q 'true'
+  startup-probe.sh: |
+    #!/bin/bash
+    mongo --port $MONGODB_PORT_NUMBER --eval 'db.hello().isWritablePrimary || db.hello().secondary' | grep 'true'
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: mongo
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mongo
+  name: pacman-mongo-common-scripts
