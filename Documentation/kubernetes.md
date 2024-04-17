@@ -165,16 +165,6 @@ see the [nginx ingress docs](https://kubernetes.github.io/ingress-nginx/)
 The persistentvolumeClaim directory has a single resource definition aimed at
 telling the cluster to provision some storage use by the database container. 
 
-### security 
-
-The security directory contains some encrypted secrets that our application will
-use. Note that this example uses open encryption (anyone with openssl or a
-similar encryption tool can read the plain text values they hide). In a real
-production application, you would not upload secrets like this to a public git
-repository. Instead, you would use something called sealed-secrets to further
-control access to the hidden values.
-
-The rbac resource definition is not pertinent to our discussion.
 
 ### services 
 
