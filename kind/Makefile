@@ -11,9 +11,11 @@ helm-package: helm check-context ##
 	-$(HELM) lint pacman-rancher
 	-$(HELM) package pacman-rancher
 
+## Exercise : use the my-values.yaml in the ../charts/pacman-rancher directory and understand the settings where it says Exercise
 .PHONY: helm-deploy
 helm-deploy: helm check-context ## 
 	-$(HELM) upgrade --install pacman-rancher ../charts/pacman-rancher --namespace pacman --create-namespace
+	- kubectl port-forward -n pacman svc/pacman-rancher 8080:8080
 
 ##@ Monitoring
 
