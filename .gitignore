@@ -1,3 +1,6 @@
 kubernetes/ingress/ingress.yaml
 kubernetes/persistentvolumeclaim/mongo-pvc.yaml
 kubernetes/security/secret.yaml
+.kubeconfig17b
+charts/pacman-rancher/myvalues.yaml
+kind/.kubeconfig26dev

@@ -25,7 +25,7 @@ class MyClientAssertionCredential {
     }
 
     async getToken(scopes) {
-        const token = await this.app.acquireTokenByClientCredential({ scopes: [scopes] }).catch(error => console.log(error))
+        const token = await this.app.acquireTokenByClientCredential({ scopes: ['https://vault.azure.net/.default'] }).catch(error => console.log(error))
         return new Promise((resolve, reject) => {
             if (token) {
                 resolve({
