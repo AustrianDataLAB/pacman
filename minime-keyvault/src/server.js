@@ -54,8 +54,15 @@ const main = async () => {
 
     // create a secret client with the token credential
     const keyvault = new SecretClient(keyvaultURL, tokenCredential)
+    console.log(`successfully created secret client, keyvaultURL=${keyvaultURL}, secretName=${secretName}`)
+    console.log(`getting secret, Name=${tokenCredential}`)
     const secret = await keyvault.getSecret(secretName).catch(error => console.log(error))
-    console.log(`successfully got secret, secret=${secret.value}`)
+    console.log(`Secret object: ${JSON.stringify(secret, null, 2)}`);
+    if (secret) {
+      console.log(`Successfully got secret, secret value=${secret.value}`);
+    } else {
+      console.log('Failed to get secret, secret object is null or undefined');
+    }
 }
 
 main()
