@@ -1,5 +1,7 @@
 CLUSTER_NAME=lecture7
-
+OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+ARCH := $(shell uname -m | sed 's/x86_64/amd64/')
+HELM := $(shell which helm)
 
 ##@ packing pacman
 .PHONY: helm-create
@@ -13,7 +15,7 @@ helm-package: helm check-context ##
 
 ## Exercise : use the my-values.yaml in the ../charts/pacman-rancher directory and understand the settings where it says Exercise
 .PHONY: helm-deploy
-helm-deploy: helm check-context ## 
+helm-deploy:  check-context ## 
 	-$(HELM) upgrade --install pacman-rancher ../charts/pacman-rancher --namespace pacman --create-namespace
 	- kubectl port-forward -n pacman svc/pacman-rancher 8080:8080
 
