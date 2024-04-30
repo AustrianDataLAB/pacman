@@ -1,0 +1,11 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- mongo-deployment.yaml
+- mongo-service.yaml
+- mongo-pvc.yaml
+- pacman-deployment.yaml
+- pacman-mongo-common-scripts.yaml
+- pacman-service.yaml
+- secret.yaml

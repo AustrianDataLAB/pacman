@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pacman
+spec:
+  template:
+    metadata:
+      labels:
+        azure.workload.identity/use: "true"
+    spec:
+      containers:
+      - image: entlein/pacman:0.0.10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pacman-service
+  annotations:
+    tailscale.expose: "true"

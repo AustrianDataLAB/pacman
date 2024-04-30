@@ -1,0 +1,34 @@
+# devaks/remove-mongo.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+$patch: delete
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+$patch: delete
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-storage
+$patch: delete
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-users-secret
+$patch: delete
+
+---
+apiVersion: v1
+kind: ConfigMap 
+metadata:
+  name: pacman-mongo-common-scripts
+$patch: delete
+

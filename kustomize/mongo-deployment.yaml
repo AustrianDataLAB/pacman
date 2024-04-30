@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: mongo
+  name: mongo
+  annotations:
+    source: "https://github.com/saintdle/pacman-tanzu"
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: mongo
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: mongo
+    spec:
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: MONGODB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-admin-password
+              name: mongodb-users-secret
+        - name: MONGODB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              key: database-name
+              name: mongodb-users-secret
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: mongodb-users-secret
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: mongodb-users-secret
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "no"
+        - name: MONGODB_SYSTEM_LOG_VERBOSITY
+          value: "0"
+        - name: MONGODB_DISABLE_SYSTEM_LOG
+          value: "no"
+        - name: MONGODB_DISABLE_JAVASCRIPT
+          value: "no"
+        - name: MONGODB_ENABLE_JOURNAL
+          value: "yes"
+        - name: MONGODB_PORT_NUMBER
+          value: "27017"
+        - name: MONGODB_ENABLE_IPV6
+          value: "no"
+        - name: MONGODB_ENABLE_DIRECTORY_PER_DB
+          value: "no"
+        image: bitnami/mongodb:4.4.14
+        imagePullPolicy: IfNotPresent
+        name: mongo
+        readinessProbe:
+          exec:
+            command:
+              - /bitnami/common-scripts/readiness-probe.sh
+          initialDelaySeconds: 5
+          periodSeconds: 20
+        livenessProbe:
+          exec:
+            command:
+              - /bitnami/common-scripts/ping-mongodb.sh
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        startupProbe:
+          exec:
+            command:
+              - /bitnami/common-scripts/startup-probe.sh
+          initialDelaySeconds: 5
+          failureThreshold: 5
+          periodSeconds: 10
+        ports:
+        - containerPort: 27017
+          name: mongo
+          protocol: TCP
+        securityContext: 
+          runAsNonRoot: true
+          runAsUser: 1001
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - name: mongo-db
+            subPath: mongodb
+            mountPath: /bitnami/mongodb/
+          - name: pacman-mongo-common-scripts-volume
+            mountPath: /bitnami/common-scripts/
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1001
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: pacman-mongo-common-scripts-volume
+        configMap:
+          defaultMode: 0755
+          name: pacman-mongo-common-scripts
+      - name: mongo-db
+        persistentVolumeClaim:
+          claimName: mongo-storage
+
