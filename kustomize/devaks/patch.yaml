@@ -15,6 +15,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: pacman-service
+  name: pacman
   annotations:
     tailscale.expose: "true"

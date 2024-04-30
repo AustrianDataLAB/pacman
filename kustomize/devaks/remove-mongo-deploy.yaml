@@ -1,0 +1,8 @@
+# devaks/remove-mongo.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+$patch: delete
+
+
