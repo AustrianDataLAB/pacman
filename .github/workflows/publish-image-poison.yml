@@ -37,6 +37,7 @@ jobs:
           
       - name: Push the image 
         run: |
+          docker login coreharbor.caas-0026.dev.austrianopencloudcommunity.org -u ${{ secrets.robot_account_name }} -p ${{ secrets.robot_account_secret }}
           docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:2.0.0 
           docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:7.0.0
           docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:8.0.0
