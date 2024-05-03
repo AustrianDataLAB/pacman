@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poc-deployment
+  namespace: poc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poc
+  template:
+    metadata:
+      labels:
+        app: poc
+    spec:
+      containers:
+      - name: poc2
+        image: coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:2.0.0
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+      - name: poc7
+        image: coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:7.0.0
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+      - name: poc8
+        image: coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:8.0.0
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true

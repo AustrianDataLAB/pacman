@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main 
-      - features/workloadid
   pull_request:
 
 env:

@@ -1,0 +1,49 @@
+name: Build and push lecture5 image
+on:
+  push:
+    branches:
+      - main 
+      - features/workloadid
+  pull_request:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: austriandatalab/minimi-kv
+
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+
+
+      - name: Build an image from Dockerfile
+        run: |
+          cd poison
+          docker build -t  coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:2.0.0 -f Dockerfile .
+          docker build -t  coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:7.0.0 -f Dockerfile .
+          docker build -t  coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:8.0.0 -f Dockerfile .
+          docker build -t  coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/bad:2.0.0 -f Dockerfile2 .
+          docker build -t  coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/bad:7.0.0 -f Dockerfile7 .
+          docker build -t  coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/bad:8.0.0 -f Dockerfile8 .
+
+          
+      - name: Push the image 
+        run: |
+          docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:2.0.0 
+          docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:7.0.0
+          docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/good:8.0.0
+          docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/bad:2.0.0
+          docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/bad:7.0.0
+          docker push coreharbor.caas-0026.dev.austrianopencloudcommunity.org/constanze/bad:8.0.0 
+
+      
+
+
